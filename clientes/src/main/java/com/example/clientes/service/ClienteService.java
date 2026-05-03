@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-@Service
+@Service("clienteService")
 @RequiredArgsConstructor
 public class ClienteService {
 
