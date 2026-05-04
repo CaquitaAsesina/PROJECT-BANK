@@ -33,13 +33,22 @@ public class ClienteService {
                 .doOnError(e -> log.error("Error al listar clientes: {}", e.getMessage()));
     }
 
+    public Flux<Cliente> ClientesActivos(Cliente.EstadoCliente estado) {
+        log.debug("Listando clientes activos");
+        return clienteRepository.findByEstado(estado)
+                .switchIfEmpty(Flux.error(new RuntimeException("Lista de clientes vacia")))
+                .doOnNext(c -> log.debug("Cliente listado: {}", c.getId()))
+                .doOnComplete(() -> log.info("Listado de clientes activos completado"))
+                .doOnError(e -> log.error("Error al listas clientes actics: {}", e.getMessage()));
+    }
+
     public Mono<Cliente> buscarPorId(String id) {
         log.debug("Buscando por id: {}", id);
         return Mono.justOrEmpty(id)
                 .filter(i -> !i.isBlank())
                 .switchIfEmpty(Mono.error(new RuntimeException("ID inválido")))
-                .flatMap(cliente -> {
-                    return clienteRepository.findById(id);
+                .flatMap(clienteId -> {
+                    return clienteRepository.findById(clienteId);
                 })
                 .switchIfEmpty(Mono.error(new RuntimeException("Cliente no encontrado con id: " + id)))
                 .doOnSuccess(c -> log.info("Cliente encontrado: {}", c.getNombre()))
