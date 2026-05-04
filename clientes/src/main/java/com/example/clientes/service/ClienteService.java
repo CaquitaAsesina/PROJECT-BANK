@@ -60,12 +60,25 @@ public class ClienteService {
         return Mono.justOrEmpty(nombre)
                 .filter(i -> !i.isBlank())
                 .switchIfEmpty(Mono.error(new RuntimeException("Nombre invalido")))
-                .flatMap(cliente -> {
-                    return clienteRepository.findByNombre(nombre);
+                .flatMap(clienteNombre -> {
+                    return clienteRepository.findByNombre(clienteNombre);
                 })
                 .switchIfEmpty(Mono.error(new RuntimeException("Cliente no encontrado: " + nombre)))
                 .doOnSuccess(c -> log.info("Cliente encontrado: {}", c.getNombre()))
                 .doOnError(e -> log.error("Error buscando por nombre: {}", e.getMessage()));
+    }
+
+    public Mono<Cliente> buscarPorDni(String dni) {
+        log.debug("Buscando por dni: {}", dni);
+        return Mono.justOrEmpty(dni)
+                .filter(i -> !i.isBlank())
+                .switchIfEmpty(Mono.error(new RuntimeException("Dni invalido")))
+                .flatMap(clienteDni -> {
+                    return clienteRepository.findByDni(clienteDni);
+                })
+                .switchIfEmpty(Mono.error(new RuntimeException("Cliente no encontrado: " + dni)))
+                .doOnSuccess(c -> log.info("Cliente encontrado: {}", c.getNombre()))
+                .doOnError(e -> log.error("Error buscando por dni: {}", e.getMessage()));
     }
 
     // POST
