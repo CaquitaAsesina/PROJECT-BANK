@@ -33,7 +33,7 @@ public class ClienteService {
                 .doOnError(e -> log.error("Error al listar clientes: {}", e.getMessage()));
     }
 
-    public Flux<Cliente> ClientesActivos(Cliente.EstadoCliente estado) {
+    public Flux<Cliente> clientesActivos(Cliente.EstadoCliente estado) {
         log.debug("Listando clientes activos");
         return clienteRepository.findByEstado(estado)
                 .switchIfEmpty(Flux.error(new RuntimeException("Lista de clientes vacia")))
@@ -132,11 +132,9 @@ public class ClienteService {
                                 return Mono.error(new RuntimeException("Email ya esta registrado en otro cliente"));
                             cliente.setEmail(email);
                             return clienteRepository.save(cliente);
-
                         }))
                 .doOnSuccess(c -> log.info("Email actualizado del cliente: {}", id))
                 .doOnError(e -> log.error("Error al cambiar email: {}", e.getMessage()));
-
     }
     // DELETE
 
