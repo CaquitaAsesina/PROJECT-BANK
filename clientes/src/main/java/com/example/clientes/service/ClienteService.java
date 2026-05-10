@@ -33,7 +33,7 @@ public class ClienteService {
                 .doOnError(e -> log.error("Error al listar clientes: {}", e.getMessage()));
     }
 
-    public Flux<Cliente> clientesActivos(Cliente.EstadoCliente estado) {
+    public Flux<Cliente> estadoClientes(Cliente.EstadoCliente estado) {
         log.debug("Listando clientes activos");
         return clienteRepository.findByEstado(estado)
                 .switchIfEmpty(Flux.error(new RuntimeException("Lista de clientes vacia")))
@@ -143,7 +143,7 @@ public class ClienteService {
     public Mono<Cliente> desactivarCliente(String id) {
         return clienteRepository.findById(id).switchIfEmpty(Mono.error(new RuntimeException(
                 "Cliente no encontrado con el id" + id)))
-                .filter(c -> c.getEstado() == Cliente.EstadoCliente.INACTIVO)
+                .filter(c -> c.getEstado() == Cliente.EstadoCliente.ACTIVO)
                 .switchIfEmpty(Mono.error(new RuntimeException(
                         "El cliente ya esta inactivo")))
                 .flatMap(cliente -> {
@@ -151,6 +151,20 @@ public class ClienteService {
                     return clienteRepository.save(cliente);
                 }).doOnNext(c -> log.info("Cliente desactivado {}", id))
                 .doOnError(e -> log.error("Error al alterar el cliente {}", e.getMessage()));
+    }
+
+    public Mono<Cliente> activarCliente(String id) {
+        return clienteRepository.findById(id).switchIfEmpty(Mono.error(new RuntimeException(
+                "Cliente no encontrado con el id" + id)))
+                .filter(c -> c.getEstado() == Cliente.EstadoCliente.INACTIVO)
+                .switchIfEmpty(Mono.error(new RuntimeException(
+                        "El cliente ya esta inactivo")))
+                .flatMap(cliente -> {
+                    cliente.setEstado(Cliente.EstadoCliente.ACTIVO);
+                    return clienteRepository.save(cliente);
+
+                }).doOnNext(c -> log.info("Cliente activado {}", id))
+                .doOnError(e -> log.error("Error al alterar al cliente {}", e.getMessage()));
     }
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.clientes.entities.Cliente;
+import com.example.clientes.entities.Cliente.EstadoCliente;
 import com.example.clientes.service.ClienteService;
 
 import lombok.RequiredArgsConstructor;
@@ -36,14 +37,24 @@ public class ClienteController {
         return clienteService.listarClientes();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/estado/{estado}")
+    public Flux<Cliente> clientesActivos(@PathVariable EstadoCliente estado) {
+        return clienteService.estadoClientes(estado);
+    }
+
+    @GetMapping("/id/{id}")
     public Mono<Cliente> buscarPorId(@PathVariable String id) {
         return clienteService.buscarPorId(id);
     }
 
-    @GetMapping("/buscar")
+    @GetMapping("/nombre/{nombre}")
     public Mono<Cliente> buscarPorNombre(@PathVariable String nombre) {
         return clienteService.buscarPorNombre(nombre);
+    }
+
+    @GetMapping("/dni/{dni}")
+    public Mono<Cliente> buscarPorDni(@PathVariable String dni) {
+        return clienteService.buscarPorDni(dni);
     }
 
     // POST
@@ -63,6 +74,16 @@ public class ClienteController {
     @PatchMapping("/{id}/email")
     public Mono<Cliente> cambiarEmail(@PathVariable String id, @RequestBody Cliente cliente) {
         return clienteService.cambiarEmail(id, cliente.getEmail());
+    }
+
+    @PatchMapping("/{id}/desactivar")
+    public Mono<Cliente> desactivarCliente(@PathVariable String id) {
+        return clienteService.desactivarCliente(id);
+    }
+
+    @PatchMapping("/{id}/activar")
+    public Mono<Cliente> activarCliente(@PathVariable String id) {
+        return clienteService.activarCliente(id);
     }
     // DELETE
 
