@@ -38,7 +38,7 @@ public class Cuenta {
 
     @PositiveOrZero(message = "El saldo no puede ser negativo")
     @Builder.Default
-    private BigDecimal salgo = BigDecimal.ZERO;
+    private BigDecimal saldo = BigDecimal.ZERO;
 
     private String moneda;
 

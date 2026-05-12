@@ -18,4 +18,7 @@ public interface ClienteRepository extends ReactiveMongoRepository<Cliente, Stri
 
     Flux<Cliente> findByEstado(Cliente.EstadoCliente estado);
 
+    Mono<Boolean> existsByEmail(String email);
+
+    Mono<Boolean> existsByDni(String dni);
 }

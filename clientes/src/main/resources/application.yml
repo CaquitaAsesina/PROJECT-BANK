@@ -1,0 +1,16 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: clientes
+  mongodb:
+    uri: mongodb://localhost:27017/bank_db
+logging:
+  level:
+    reactor:
+      netty: DEBUG
+    com:
+      tutorial:
+        clientes: DEBUG
+  pattern:
+    console: '%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'

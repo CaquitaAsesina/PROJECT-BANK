@@ -1,0 +1,19 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: cuentas-service
+  mongodb:
+    uri: mongodb://localhost:27017/cuentas_db
+microservicios:
+  clientes:
+    url: http://localhost:8081
+logging:
+  level:
+    reactor:
+      netty:
+        http:
+          client: DEBUG
+    com:
+      tutorial:
+        cuentas: DEBUG
