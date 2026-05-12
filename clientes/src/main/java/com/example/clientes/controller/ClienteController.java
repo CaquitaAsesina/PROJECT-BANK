@@ -33,7 +33,7 @@ public class ClienteController {
 
     // GET
     @GetMapping
-    public Flux<Cliente> listar() {
+    public Flux<Cliente> listarClientes() {
         return clienteService.listarClientes();
     }
 

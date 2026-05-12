@@ -34,12 +34,12 @@ public class ClienteService {
     }
 
     public Flux<Cliente> estadoClientes(Cliente.EstadoCliente estado) {
-        log.debug("Listando clientes activos");
+        log.debug("Listando clientes" + estado);
         return clienteRepository.findByEstado(estado)
                 .switchIfEmpty(Flux.error(new RuntimeException("Lista de clientes vacia")))
                 .doOnNext(c -> log.debug("Cliente listado: {}", c.getId()))
-                .doOnComplete(() -> log.info("Listado de clientes activos completado"))
-                .doOnError(e -> log.error("Error al listas clientes actics: {}", e.getMessage()));
+                .doOnComplete(() -> log.info("Listado de clientes " + estado + "completado"))
+                .doOnError(e -> log.error("Error al listas clientes " + estado + ": {}", e.getMessage()));
     }
 
     public Mono<Cliente> buscarPorId(String id) {

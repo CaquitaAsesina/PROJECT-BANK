@@ -36,7 +36,7 @@ public class Cuenta {
     @NotNull(message = "El tipo de cuenta es obligatorio")
     private TipoCuenta tipoCuenta;
 
-    @PositiveOrZero(message = "El salfo no puede ser negativo")
+    @PositiveOrZero(message = "El saldo no puede ser negativo")
     @Builder.Default
     private BigDecimal salgo = BigDecimal.ZERO;
 

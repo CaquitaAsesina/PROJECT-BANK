@@ -17,4 +17,6 @@ public interface CuentaRespository extends ReactiveMongoRepository<Cuenta, Strin
     Mono<Boolean> existsByNumeroCuenta(String numeroCuenta);
 
     Flux<Cuenta> findByClienteIdAndEstado(String clienteId, Cuenta.EstadoCuenta estado);
+
+    Flux<Cuenta> findByTipoCuenta(Cuenta.TipoCuenta tipo);
 }
